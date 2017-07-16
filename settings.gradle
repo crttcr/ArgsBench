@@ -1,0 +1,5 @@
+rootProject.name = 'ArgsBench'
+
+includeFlat 'JavaUtil'
+includeFlat 'Console'
+includeFlat 'Args'

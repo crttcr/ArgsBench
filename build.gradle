@@ -1,0 +1,55 @@
+apply plugin: 'java-library'
+apply plugin: 'eclipse'
+
+ext
+{
+	sourceCompatibility = '1.8'
+	targetCompatibility = '1.8'
+}
+
+repositories 
+{
+	mavenLocal()
+	jcenter()
+	mavenCentral()
+}
+
+ 
+dependencies 
+{
+	compile project(':JavaUtil')
+	compile project(':Console')
+	compile project(':Args')
+
+   // Lombok
+   //
+   compile 'org.projectlombok:lombok:1.16.16'
+
+	// JUnit
+	//
+	compile 'junit:junit:4.12+'
+
+	// Mockito
+	//
+	testCompile 'org.mockito:mockito-all:2.0+'
+}
+
+// How-to add class path:
+//     https://stackoverflow.com/questions/22659463/add-classpath-in-manifest-using-gradle
+//     https://gist.github.com/simon04/6865179
+//
+/*
+jar {
+	// Keep jar clean:
+	//
+    exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.MF'
+    
+    // Define the Manifest
+    //
+    manifest {
+        attributes 'Main-Class': 'com.xivvic.args.interact.ArgsBench',
+                   'Class-Path': configurations.runtime.files.collect { "libs/$it.name" }.join(' ')
+    }
+}
+*/
+

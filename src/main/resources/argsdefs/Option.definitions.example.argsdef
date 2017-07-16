@@ -1,0 +1,22 @@
+## Example long-form option definitions
+##
+[help]
+[path]
+description="The path to search"
+type=PATH
+validation=PATH.exists
+
+[server]
+description="Server name or IP address"
+type=STRING
+validation=STRING.not.empty
+
+[port]
+description="Server port"
+type=INTEGER
+validation:INTEGER.positive
+
+[file]
+description="input file"
+type=FILE
+validation=FILE.readable
