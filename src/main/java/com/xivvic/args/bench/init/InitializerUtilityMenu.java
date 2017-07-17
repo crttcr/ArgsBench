@@ -1,8 +1,9 @@
-package com.xivvic.args.interact;
+package com.xivvic.args.bench.init;
 
 import java.util.Arrays;
 
 import com.xivvic.args.Args;
+import com.xivvic.args.bench.ArgsBench;
 import com.xivvic.args.schema.Schema;
 
 import lombok.Data;

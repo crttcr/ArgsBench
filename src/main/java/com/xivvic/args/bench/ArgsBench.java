@@ -1,4 +1,4 @@
-package com.xivvic.args.interact;
+package com.xivvic.args.bench;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.xivvic.args.Args;
+import com.xivvic.args.bench.init.Initializer;
 import com.xivvic.args.schema.Schema;
 import com.xivvic.args.schema.item.Item;
 import com.xivvic.args.util.FileUtil;

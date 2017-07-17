@@ -1,13 +1,16 @@
-package com.xivvic.args.interact;
+package com.xivvic.args.bench.init;
 
 import java.util.List;
 import java.util.Map;
 
+import com.xivvic.args.bench.ArgsBench;
+import com.xivvic.args.bench.interact.ItemInteractor;
 import com.xivvic.args.error.SchemaException;
 import com.xivvic.args.schema.Schema;
 import com.xivvic.args.schema.SchemaBuilder;
 import com.xivvic.args.schema.Text2Schema;
 import com.xivvic.args.schema.item.Item;
+import com.xivvic.args.schema.item.Item.Builder;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -121,11 +124,11 @@ public class InitializerSchemaMenu
 			@Override
 			protected void internal_invoke(Object param)
 			{
-				String target = null;
-				Map<String, Object> defs = null;
+				Map<String, String> defs = null;
 				if (param == null)
 				{
-					// FIXME: defs = interactiveDefinition(stdin);
+					ItemInteractor ii = new ItemInteractor(stdin);
+					defs = ii.gatherItemDefinition();
 				}
 				else
 				{
@@ -133,12 +136,20 @@ public class InitializerSchemaMenu
 					// FIXME: defs = parseIt(s);
 				}
 
-				//				Builder<Object> builder = Item.builder();
-				//				Item<?> addition = builder.build();
-				//				Schema schema = bench.schema();
-				//				Schema replacement = schema.with(addition);
-				//				bench.schema(replacement);
-				//				System.out.println(addition + " added to schema");
+				try
+				{
+					Builder<?> builder = Item.builder(defs);
+					Item<?> addition = builder.build();
+					Schema schema = bench.schema();
+					Schema replacement = schema.with(addition);
+					bench.schema(replacement);
+					System.out.println(addition + " added to schema");
+				}
+				catch (SchemaException e)
+				{
+					System.err.println("Failed to add new schema item " + e.errorMessage());
+				}
+
 			}
 		};
 		return new MenuItem(label, "a", a);
