@@ -17,10 +17,10 @@ import lombok.experimental.Accessors;
 import xivvic.console.action.Action;
 import xivvic.console.action.ActionBase;
 import xivvic.console.action.ActionManager;
-import xivvic.console.interact.Stdin;
 import xivvic.console.menu.Menu;
 import xivvic.console.menu.MenuItem;
 import xivvic.console.menu.MenuManager;
+import xivvic.util.io.Stdio;
 
 /**
  * This class creates the Schema menu and associated actions
@@ -33,9 +33,9 @@ public class InitializerSchemaMenu
 {
 	private final ActionManager am;
 	private final MenuManager mm;
-	private final Stdin stdin;
+	private final Stdio stdin;
 
-	public InitializerSchemaMenu(ActionManager am, MenuManager mm, Stdin stdin)
+	public InitializerSchemaMenu(ActionManager am, MenuManager mm, Stdio stdin)
 	{
 		this.am    = am;
 		this.mm    = mm;
@@ -133,6 +133,7 @@ public class InitializerSchemaMenu
 				else
 				{
 					String s = (String) param;
+					System.err.println("Unable to process parameter [" + s + "] need more programmer foo");
 					// FIXME: defs = parseIt(s);
 				}
 
@@ -169,7 +170,7 @@ public class InitializerSchemaMenu
 				if (param == null)
 				{
 					List<String> options = schema.getOptions();
-					target = options.get(0);
+					target = stdin.getStringFromList(options, "Remove which option?");
 				}
 				else
 				{

@@ -9,10 +9,10 @@ import lombok.experimental.Accessors;
 import xivvic.console.action.Action;
 import xivvic.console.action.ActionBase;
 import xivvic.console.action.ActionManager;
-import xivvic.console.interact.Stdin;
 import xivvic.console.menu.Menu;
 import xivvic.console.menu.MenuItem;
 import xivvic.console.menu.MenuManager;
+import xivvic.util.io.Stdio;
 
 /**
  * This class creates the Args menu and associated actions
@@ -25,9 +25,9 @@ public class InitializerArgumentMenu
 {
 	private final ActionManager am;
 	private final MenuManager mm;
-	private final Stdin stdin;
+	private final Stdio stdin;
 
-	public InitializerArgumentMenu(ActionManager am, MenuManager mm, Stdin stdin)
+	public InitializerArgumentMenu(ActionManager am, MenuManager mm, Stdio stdin)
 	{
 		this.am    = am;
 		this.mm    = mm;
@@ -113,7 +113,7 @@ public class InitializerArgumentMenu
 			protected void internal_invoke(Object param)
 			{
 				String prompt = "New Argument to add: ";
-				String arg = stdin.promptString(prompt, "-h");
+				String arg = stdin.getStringWithDefault(prompt, "-h");
 				bench.addArg(arg);
 				String[] args = bench.arguments();
 				String    out = Arrays.toString(args);
@@ -137,7 +137,7 @@ public class InitializerArgumentMenu
 				if (param == null)
 				{
 					String prompt = "Argument to remove: ";
-					arg = stdin.promptString(prompt, null);
+					arg = stdin.getString(prompt);
 				}
 				else
 				{

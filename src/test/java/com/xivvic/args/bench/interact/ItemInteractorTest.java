@@ -6,7 +6,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import xivvic.console.interact.Stdin;
+import xivvic.util.io.Stdio;
+
 
 public class ItemInteractorTest
 {
@@ -15,8 +16,8 @@ public class ItemInteractorTest
 	@Before
 	public void before()
 	{
-		Stdin stdin = new Stdin(System.in, System.out);
-		subject = new ItemInteractor(stdin);
+		Stdio stdio = new Stdio(System.in, System.out);
+		subject = new ItemInteractor(stdio);
 	}
 
 	@Test

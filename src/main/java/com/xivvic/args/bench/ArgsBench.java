@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.xivvic.args.Args;
 import com.xivvic.args.bench.init.Initializer;
+import com.xivvic.args.error.ArgsException;
 import com.xivvic.args.schema.Schema;
 import com.xivvic.args.schema.item.Item;
 import com.xivvic.args.util.FileUtil;
@@ -31,8 +32,6 @@ public final class ArgsBench extends Application
 	//	private final static String example_schema = getOptionDefinitions();
 
 	private String[] arguments = {"-v", "foo", "bar"};
-	private String   schemaText = null;
-	private Args arg;
 	private Schema schema;
 
 	private final Initializer init;
@@ -68,6 +67,25 @@ public final class ArgsBench extends Application
 		String defs = FileUtil.readFromResourceFile(path, file);
 
 		return defs;
+	}
+
+	public boolean applyArgsToSchema()
+	{
+		String[] args = arguments();
+		Schema schema = schema();
+
+		try
+		{
+			Args a = Args.processOrThrowException(schema, args);
+			System.out.println(a);
+			return true;
+		}
+		catch (ArgsException e)
+		{
+			System.out.println(e.errorMessage());
+		}
+
+		return false;
 	}
 
 	public void clearArgs()

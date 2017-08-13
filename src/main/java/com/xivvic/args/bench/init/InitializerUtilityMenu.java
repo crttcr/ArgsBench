@@ -2,7 +2,6 @@ package com.xivvic.args.bench.init;
 
 import java.util.Arrays;
 
-import com.xivvic.args.Args;
 import com.xivvic.args.bench.ArgsBench;
 import com.xivvic.args.schema.Schema;
 
@@ -12,10 +11,10 @@ import xivvic.console.action.Action;
 import xivvic.console.action.ActionBase;
 import xivvic.console.action.ActionManager;
 import xivvic.console.action.DummyAction;
-import xivvic.console.interact.Stdin;
 import xivvic.console.menu.Menu;
 import xivvic.console.menu.MenuItem;
 import xivvic.console.menu.MenuManager;
+import xivvic.util.io.Stdio;
 
 /**
  * This class constructs the utility menu and associated actions.
@@ -28,13 +27,13 @@ public class InitializerUtilityMenu
 {
 	private final ActionManager am;
 	private final MenuManager mm;
-	private final Stdin stdin;
+	private final Stdio stdio;
 
-	public InitializerUtilityMenu(ActionManager am, MenuManager mm, Stdin stdin)
+	public InitializerUtilityMenu(ActionManager am, MenuManager mm, Stdio stdio)
 	{
 		this.am    = am;
 		this.mm    = mm;
-		this.stdin = stdin;
+		this.stdio = stdio;
 	}
 
 	public Menu createMenu(ArgsBench bench)
@@ -42,8 +41,8 @@ public class InitializerUtilityMenu
 		final String name = "Utility";
 		Menu menu = new Menu(name, "um", mm);
 
-		menu.addItem(utilRunCurrentArgs(bench));
-		menu.addItem(utilRunOneArg(bench));
+		menu.addItem(runCurrentConfiguration(bench));
+		menu.addItem(runSingleArgumentWithCurrentSchema(bench));
 		menu.addItem(utilRunWithHelp(bench));
 		menu.addItem(utilExportSchema(bench));
 		menu.addItem(utilShowCommands(bench));
@@ -52,15 +51,23 @@ public class InitializerUtilityMenu
 		return menu;
 	}
 
-	private MenuItem utilRunCurrentArgs(ArgsBench bench)
+	private MenuItem runCurrentConfiguration(ArgsBench bench)
 	{
 		String label = "Run current args and schema";
-		String   def = "Applies the current arguments to the schema";
-		Action a = new DummyAction(label, def, false);
+		String   def = "Applies the current arguments to the current schema";
+		Action     a = new ActionBase(label, def, true) {
+
+			@Override
+			protected void internal_invoke(Object param)
+			{
+				boolean ok = bench.applyArgsToSchema();
+				System.out.println(ok ? "SUCCESS" : "FAILURE");
+			}
+		};
 		return new MenuItem(label, "r", a);
 	}
 
-	private MenuItem utilRunOneArg(ArgsBench bench)
+	private MenuItem runSingleArgumentWithCurrentSchema(ArgsBench bench)
 	{
 		String label = "Run one argument with current schema";
 		String   def = "Applies a single arguments to the current schema";
@@ -111,11 +118,11 @@ public class InitializerUtilityMenu
 			{
 				String fmt = "ArgsBench current state:";
 				final 	Schema schema = bench.schema();
-				final 	Args	   args = bench.arg();
+				final 	String[] args = bench.arguments();
 
 				System.out.println(fmt);
-				System.out.println(schema == null ? "No schema defined" : schema.toString());
-				System.out.println(args   == null ? "No args defined"   : args.toString());
+				System.out.println(schema == null ? "No schema defined" : schema);
+				System.out.println(args   == null ? "No args defined"   : "Args   " + Arrays.toString(args));
 			}
 		};
 		return new MenuItem(label, "ss", a);

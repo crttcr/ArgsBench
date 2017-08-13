@@ -1,23 +1,20 @@
 package com.xivvic.args.bench.interact;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import com.xivvic.args.schema.OptionType;
 import com.xivvic.args.schema.item.Item;
 
-import xivvic.console.interact.Stdin;
+import xivvic.util.io.Stdio;
 
 public class ItemInteractor
 {
-	private final Stdin stdin;
+	private final Stdio stdio;
 
-	public ItemInteractor(Stdin stdin)
+	public ItemInteractor(Stdio stdio)
 	{
-		this.stdin = stdin;
+		this.stdio = stdio;
 	}
 
 	/**
@@ -41,15 +38,15 @@ public class ItemInteractor
 	private String gatherName()
 	{
 		String prompt = "What is the name for this item? ";
-		String   name = stdin.promptString(prompt, null);
+		String   name = stdio.getString(prompt);
 
 		return name;
 	}
 
 	private String gatherType()
 	{
-		String   prompt = "Select the type for this item\n";
-		OptionType type = promptForEnumValueWithDefault(prompt, OptionType.STRING);
+		String   prompt = "What type of value does this option provide?";
+		OptionType type = stdio.getEnumWithDefault(prompt, OptionType.STRING);
 
 		return type.toString();
 	}
@@ -57,7 +54,7 @@ public class ItemInteractor
 	private String gatherDescription()
 	{
 		String prompt = "What is the description for this item? ";
-		String   desc = stdin.promptString(prompt, null);
+		String   desc = stdio.getString(prompt);
 
 		return desc;
 	}
@@ -71,7 +68,7 @@ public class ItemInteractor
 	private String gatherRequired()
 	{
 		String prompt = "Is the item required? [no] ";
-		Boolean  reqd = stdin.confirm(prompt, false);
+		Boolean  reqd = stdio.confirm(prompt, false);
 
 		return reqd.toString();
 	}
@@ -79,47 +76,9 @@ public class ItemInteractor
 	private String gatherEnvironmentVariableName()
 	{
 		String prompt = "If there is an environment variable for this item, what is it? [none] ";
-		String    env = stdin.promptString(prompt, null);
+		String    env = stdio.getString(prompt);
 
 		return env;
-	}
-
-	// TODO: This needs to be moved to Stdin class when Ryan has moved it ...
-	//
-	private <E extends Enum<E>> E promptForEnumValueWithDefault(String prompt, E dv)
-	{
-		Objects.requireNonNull(dv);
-
-		@SuppressWarnings("unchecked")
-		E[] values = (E[]) dv.getClass().getEnumConstants();
-
-		List<String> names = new ArrayList<>(values.length);
-
-		int defaultPosition = 0;
-		for (int i = 0; i < values.length; i++)
-		{
-			E item = values[i];
-			names.add(item.name());
-			if (dv == item)
-			{
-				defaultPosition = i;
-			}
-		}
-
-		String answer = stdin.getStringFromListWithDefault(names, prompt, defaultPosition);
-
-		for (int i = 0; i < values.length; i++)
-		{
-			E item = values[i];
-			if (answer.equals(item.name()))
-			{
-				return item;
-			}
-		}
-
-		// Should never exit the loop above without finding the chosen item.
-		//
-		return dv;
 	}
 
 }

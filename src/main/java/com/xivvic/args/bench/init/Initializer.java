@@ -5,9 +5,9 @@ import com.xivvic.args.bench.ArgsBench;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import xivvic.console.action.ActionManager;
-import xivvic.console.interact.Stdin;
 import xivvic.console.menu.Menu;
 import xivvic.console.menu.MenuManager;
+import xivvic.util.io.Stdio;
 
 /**
  * This class is responsible for initialization actions for the main application class.
@@ -26,13 +26,13 @@ public class Initializer
 {
 	private final ActionManager am;
 	private final MenuManager mm;
-	private final Stdin stdin;
+	private final Stdio stdio;
 
 	public Initializer()
 	{
 		this.am    = new ActionManager();
 		this.mm    = new MenuManager(am);
-		this.stdin = new Stdin(System.in, System.out);
+		this.stdio = new Stdio(System.in, System.out);
 	}
 
 	//	// TODO Auto-generated method stub
@@ -54,9 +54,9 @@ public class Initializer
 	{
 		Menu main = new Menu("ArgsBench :: MainMenu", "code", mm);
 
-		InitializerArgumentMenu iam = new InitializerArgumentMenu(am, mm, stdin);
-		InitializerSchemaMenu   ism = new InitializerSchemaMenu(am, mm, stdin);
-		InitializerUtilityMenu  ium = new InitializerUtilityMenu(am, mm, stdin);
+		InitializerArgumentMenu iam = new InitializerArgumentMenu(am, mm, stdio);
+		InitializerSchemaMenu   ism = new InitializerSchemaMenu(am, mm, stdio);
+		InitializerUtilityMenu  ium = new InitializerUtilityMenu(am, mm, stdio);
 
 		main.addItem(iam.createMenu(bench));
 		main.addItem(ism.createMenu(bench));
