@@ -24,6 +24,7 @@ import xivvic.util.io.Stdio;
 @Data
 @Accessors(fluent = true)
 public class InitializerUtilityMenu
+	implements MenuCreator
 {
 	private final ActionManager am;
 	private final MenuManager mm;

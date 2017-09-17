@@ -22,6 +22,7 @@ import xivvic.util.io.Stdio;
 @Data
 @Accessors(fluent = true)
 public class InitializerArgumentMenu
+	implements MenuCreator
 {
 	private final ActionManager am;
 	private final MenuManager mm;
@@ -34,6 +35,7 @@ public class InitializerArgumentMenu
 		this.stdin = stdin;
 	}
 
+	@Override
 	public Menu createMenu(ArgsBench bench)
 	{
 		final String name = "Args";

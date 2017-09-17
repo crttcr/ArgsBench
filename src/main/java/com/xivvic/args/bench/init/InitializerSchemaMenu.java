@@ -30,6 +30,7 @@ import xivvic.util.io.Stdio;
 @Data
 @Accessors(fluent = true)
 public class InitializerSchemaMenu
+	implements MenuCreator
 {
 	private final ActionManager am;
 	private final MenuManager mm;

@@ -8,6 +8,8 @@ import java.util.Map;
 
 import com.xivvic.args.Args;
 import com.xivvic.args.bench.init.Initializer;
+import com.xivvic.args.display.TableData;
+import com.xivvic.args.display.TabularDisplay;
 import com.xivvic.args.error.ArgsException;
 import com.xivvic.args.schema.Schema;
 import com.xivvic.args.schema.item.Item;
@@ -19,7 +21,8 @@ import lombok.experimental.Accessors;
 import xivvic.console.Application;
 
 /**
- * Example application to run the Args command line processor.
+ * Example application to run the Args command line processor and interactively
+ * develop and test argument specifications.
  */
 
 @Data
@@ -76,8 +79,12 @@ public final class ArgsBench extends Application
 
 		try
 		{
-			Args a = Args.processOrThrowException(schema, args);
-			System.out.println(a);
+			Args            a = Args.processOrThrowException(schema, args);
+			TableData    data = TableData.from(a, schema);
+			TabularDisplay td = new TabularDisplay(data);
+			String        out = td.format(120);
+
+			System.out.println(out);
 			return true;
 		}
 		catch (ArgsException e)

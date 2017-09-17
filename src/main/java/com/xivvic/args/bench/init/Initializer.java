@@ -54,13 +54,18 @@ public class Initializer
 	{
 		Menu main = new Menu("ArgsBench :: MainMenu", "code", mm);
 
-		InitializerArgumentMenu iam = new InitializerArgumentMenu(am, mm, stdio);
-		InitializerSchemaMenu   ism = new InitializerSchemaMenu(am, mm, stdio);
-		InitializerUtilityMenu  ium = new InitializerUtilityMenu(am, mm, stdio);
+		MenuCreator[] creators =
+		{
+			new InitializerArgumentMenu(am, mm, stdio),
+			new InitializerSchemaMenu(  am, mm, stdio),
+			new InitializerUtilityMenu( am, mm, stdio)
+		};
 
-		main.addItem(iam.createMenu(bench));
-		main.addItem(ism.createMenu(bench));
-		main.addItem(ium.createMenu(bench));
+		for (MenuCreator mc: creators)
+		{
+			Menu m = mc.createMenu(bench);
+			main.addItem(m);
+		}
 
 		return main;
 	}

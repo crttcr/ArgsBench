@@ -61,6 +61,8 @@ public class ItemInteractor
 
 	private String gatherDefault()
 	{
+		String msg = "The ability to define a default value has not been developed";
+		stdio.output(msg);
 		// FIXME: Default
 		return null;
 	}
